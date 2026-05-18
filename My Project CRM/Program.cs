@@ -1,5 +1,7 @@
+using DataAccessLayer;
+using DataAccessLayer.Class;
+using DataAccessLayer.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using MyProject.Data;
 namespace My_Project_CRM
 {
     public class Program
@@ -17,6 +19,9 @@ namespace My_Project_CRM
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<IEmployeeBLL, EmployeeBLL>();
+            builder.Services.AddScoped<IEmployeeDAL, EmployeeDAL>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -25,7 +30,7 @@ namespace My_Project_CRM
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+         
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

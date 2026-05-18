@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyProject.Models;
+using Model;
 
-namespace MyProject.Data
+namespace DataAccessLayer
 {
     public class AppDbContext : DbContext
     {
@@ -9,6 +9,6 @@ namespace MyProject.Data
         {
         }
 
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Employee> employees { get; set; }
     }
 }
