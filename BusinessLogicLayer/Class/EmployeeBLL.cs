@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer;
 using DataAccessLayer.Interfaces;
+using DTO.Param;
 using Model;
 
 public class EmployeeBLL : IEmployeeBLL
@@ -21,6 +22,15 @@ public class EmployeeBLL : IEmployeeBLL
 
         return await _employeeDAL.CreateEmployee(employee);
 
+    }
+    public async Task<bool> DeleteEmployee(int employee_id)
+    {
+        return await _employeeDAL.DeleteEmployee(employee_id);
+    }
+
+    public async Task<bool> UpdateEmployee(int employee_id, EmployeeUpdateDTO model)
+    {
+        return await _employeeDAL.UpdateEmployee(employee_id, model);
     }
 
 

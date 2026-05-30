@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using DTO.Param;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,9 @@ namespace DataAccessLayer.Interfaces
     {
         Task<Employee> GetEmployees();
         Task<Employee> CreateEmployee(Employee employee);
+
+        Task<bool> DeleteEmployee(int employee_id);
+        Task<bool> UpdateEmployee(int employee_id, EmployeeUpdateDTO model);
     }
     
 }

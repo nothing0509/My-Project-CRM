@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer;
+using DTO.Param;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model;
@@ -37,8 +38,29 @@ namespace My_Project_CRM.Controllers
             return Ok(result);
             
         }
+        [HttpDelete]
 
- 
+        public async Task<IActionResult> DeleteEmployee(int employee_id)
+        {
+            var result = await _employeeBll.DeleteEmployee(employee_id);
+            if (result)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateEmloyee(int employee_id,[FromBody] EmployeeUpdateDTO model)
+        {
+            var result= await _employeeBll.UpdateEmployee(employee_id, model);
+            if (result)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
 
         //// ===============================
         //// GET EMPLOYEE BY ID
