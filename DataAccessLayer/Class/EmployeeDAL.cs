@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Model;
 using DTO.Param;
+using DTO.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,43 @@ namespace DataAccessLayer.Class
             await _context.SaveChangesAsync();
             _context.employees.Update(employee);
             return true;
+        }
+        public async Task<PagedResult<Employee>> PaginationEmployee(EmployeeQuery query)
+        {
+            /*Xây dựng 1 query rỗng, vì chưa biết trước sẽ query theo cái gì của pagination truyền vào
+             = select * from employee
+             */
+
+            var employeeQuery=_context.employees.AsQueryable();
+            employeeQuery = employeeQuery.Where(x => x.IsDelete == false);
+            if (!string.IsNullOrWhiteSpace(query.Search))
+            {
+                /*
+                 Bổ sung điều kiện where cho employee
+                 */
+                employeeQuery = employeeQuery.Where(x => x.FirstName.Contains(query.Search) || x.Email.Contains(query.Search));
+            }
+            employeeQuery=query.SortOrder?.ToLower()=="desc"?employeeQuery.OrderByDescending(x=>x.HireDate):employeeQuery
+                .OrderBy(x=>x.HireDate);
+
+           
+            var totalRecord = await employeeQuery.CountAsync();
+
+            var employees = await employeeQuery
+                 /*bỏ qua các bản ghi của page khác*/
+                 .Skip((query.PageNumber - 1) * query.PageSize)
+                 /*lấy dữ liệu */
+                 .Take(query.PageSize)
+                 .ToListAsync();
+            return new PagedResult<Employee>
+            {
+                PageNumber = query.PageNumber,
+                PageSize = query.PageSize,
+                TotalRecords = totalRecord,
+                TotalPages = (int)Math.Ceiling(totalRecord / (double)query.PageSize),
+                Data = employees
+            };
+           
         }
     }
 }

@@ -62,6 +62,12 @@ namespace My_Project_CRM.Controllers
             return BadRequest();
         }
 
+        [HttpGet("pagination")]
+        public async Task<IActionResult> PaginationEmployee([FromQuery] EmployeeQuery query)
+        {
+            var result=await _employeeBll.PaginationEmployee(query);
+            return Ok(result);
+        }
         //// ===============================
         //// GET EMPLOYEE BY ID
         //// ===============================

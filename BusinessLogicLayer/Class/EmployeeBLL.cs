@@ -33,6 +33,9 @@ public class EmployeeBLL : IEmployeeBLL
         return await _employeeDAL.UpdateEmployee(employee_id, model);
     }
 
-
+    public async Task<PagedResult<Employee>> PaginationEmployee(EmployeeQuery query)
+    {
+        return await _employeeDAL.PaginationEmployee(query);
+    }
 
 }
